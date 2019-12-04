@@ -1,6 +1,6 @@
 wcdbda
 ================
-**Autor:** Gustavo Nascimento</br> - gunasper@gmail.com
+**Autor:** Gustavo Nascimento (gunasper@gmail.com)
 
 # O projeto
 Este projeto tem como objetivo construir uma estrutura mínima que possibilite a produtização de modelos de Machine Learning. Existem diversas abordagens possíveis para o problema citado, a depender, geralmente, de regras de negócios. A figura abaixo sumariza 4 abordagens possíveis. Neste projeto, opta-se por disponibilizar o modelo usando a estratégia de "webservice". Neste cenário, o modelo será treinado uma única vez e será colocado em produção por meio de uma API.
@@ -43,7 +43,7 @@ Para a disponibilização do modelo, as seguintes tecnologias serão usadas:
 Os arquivos acima contém comentários explicando o que fazer e aonde modificar, bem como o comportamento esperado de cada função ou trecho de código. Recomenda-se que os trechos de código sejam preenchidos na ordem em que os arquivos são mencionados.
 
 #### makefile
-O comando "make run" irá inicializar a API em Flask. Uma outra forma de inicializá-la é executar, em linha de comando, `env FLASK_APP=app.py env FLASK_DEBUG=1 flask run`.
+O comando "make run" irá inicializar a aplicação. Uma outra forma de inicializá-la é executar, em linha de comando, `env FLASK_APP=app.py env FLASK_DEBUG=1 flask run`.
 
 # Deploy Heroku
 
