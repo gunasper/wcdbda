@@ -5,6 +5,8 @@ from flask import Flask
 from flask import request, jsonify
 from flask_cors import CORS
 
+import pandas as pd
+
 from persistence.model_persistence import ModelPersistence
 
 #load model
@@ -31,40 +33,95 @@ def predict():
         data = request.data
         data = json.loads(data.decode())
 
-        ####
-        # expected_data = {
-        #   "expenses": 521654.65,
-        #   "income": 6546.54,
-        #   "assets": 6546.54,
-        #   "debt": 6.54,
-        #   "amount": 6.54,
-        #   "price": 654.65,
-        #   "seniority": "5",
-        #   "home": "kajshakj",
-        #   "time": "5466",
-        #   "age": "654654",
-        #   "marital": "married",
-        #   "records": true,
-        #   "job": "2321",
-        #   "approved": true
-        # }
-        ####
+        # features must have the same values as in training data, so we must make some processment to maintain categorical values
+        job_values = {
+            'fixo': 'fixed',
+            'freelancer': 'freelance',
+            'outros': 'others',
+            'parcial': 'partime',
+            'fixed': 'fixed',
+            'freelance': 'freelance',
+            'others': 'others',
+            'partime': 'partime'
+        }
+        data['job'] = job_values[data['job']] if data['job'] in job_values else 'fixed'
+
+        marital_values = {
+            'divorciado': 'divorced',
+            'casado': 'married',
+            'separado': 'separated',
+            'solteiro': 'single',
+            'viuvo': 'widow',
+            'divorced': 'divorced',
+            'married': 'married',
+            'separated': 'separated',
+            'single': 'single',
+            'widow': 'widow'
+        }
+        data['marital'] = marital_values[data['marital']] if data['marital'] in marital_values else 'single'
+
+        home_values = {
+            'ignorar': 'ignore',
+            'outro': 'other',
+            'propria': 'owner',
+            'pais': 'parents',
+            'privado': 'priv',
+            'aluguel': 'rent',
+            'ignore': 'ignore',
+            'other': 'other',
+            'owner': 'owner',
+            'parents': 'parents',
+            'priv': 'priv',
+            'rent': 'rent'
+        }
+
+        parsed_data = {}
+        data['home'] = home_values[data['home']] if data['home'] in home_values else 'rent'
+
+        input_data = pd.DataFrame([
+            (
+                data['seniority'],
+                data['home'],
+                data['time'],
+                data['age'],
+                data['marital'],
+                data['records'],
+                data['job'],
+                data['expenses'],
+                data['income'],
+                data['assets'],
+                data['debt'],
+                data['amount'],
+                data['price']
+            )
+        ],
+        columns=['Seniority', 'Home', 'Time', 'Age', 'Marital', 'Records', 'Job', 'Expenses', 'Income', 'Assets', 'Debt', 'Amount', 'Price'])
 
         ####
-        #
-        #   Your code here! It will be a little tricky to recreate the "dummies"! Careful.
-        #   parsed_data = {}
-        #   parsed_data['Job_partime'] = 1 if data['job'] == 'parttime' else 0
-        #   parsed_data['Job_others'] = 1 if data['job'] == 'others' else 0
-        #
+        # expected_data = {
+        #     "expenses": 521654.65,
+        #     "income": 6546.54,
+        #     "assets": 6546.54,
+        #     "debt": 6.54,
+        #     "amount": 6.54,
+        #     "price": 654.65,
+        #     "seniority": "5",
+        #     "home": "rent",
+        #     "time": 5466,
+        #     "age": 65,
+        #     "marital": "married",
+        #     "records": true,
+        #     "job": "partial",
+        #     "approved": true
+        # }
         ####
-        value = True
-        prob = 0.6
+        value = my_model.predict(input_data)
+        prob = my_model.predict_proba(input_data)
 
         result = {
             "prediction": {
-                "value": value,
-                "probability": 0.6
+                "value": bool(value[0]),
+                "probability": max(prob[0])
             },
             "prediction_time": datetime.now()
         }
@@ -76,32 +133,22 @@ def model_info():
         This method aims to parse classifier information and send it to the caller;
         It also serves as a classifier health checker.
     """
-    ####
-    #
-    #   Your code here!
-    #   You should parse the feature importances of your classifier here
-    #
-    ####
+    importances = my_model['rf'].feature_importances_
+    feature_names = list(my_model['ct'].get_feature_names())
+
+    feature_importances = {y : x for x, y in zip(importances, feature_names)}
 
     # Expected minimum variables
-    name = "Random Forest Classifier"
-    num_trees = 100
-    max_depth = 7
-    feature_importances = {
-        'LSTAT': 0.5298,
-        'RM': 0.4116,
-        'DIS': 0.0252,
-        'CRIM': 0.0172,
-        'NOX': 0.0065,
-        'PTRATIO': 0.0035
-    }
+    name = my_model['rf'].__class__.__name__
+    num_trees = len(my_model['rf'].estimators_)
+    max_depth = my_model['rf'].n_features_
     model_created_at = '2020-01-01 00:00:00'
 
     result = {
         'model_name': name,
         'num_trees': num_trees,
-        'max_depth': max_depth,
+        'num_features': max_depth,
         'feature_importances' : feature_importances,
-        'model_created_at': model_created_at
+        'model_created_at': ModelPersistence.get_model_update_date()
     }
     return result

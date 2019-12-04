@@ -1,3 +1,4 @@
+from datetime import datetime
 import joblib
 
 class ModelPersistence():
@@ -11,9 +12,11 @@ class ModelPersistence():
         """
         my_classifier = None
         classifier_file =  ModelPersistence.MODEL_FOLDER + ModelPersistence.MODEL_NAME
-        #####
-        #
-        #   Your code here!
-        #
-        #####
+        my_classifier = joblib.load(classifier_file)
         return my_classifier
+
+    def get_model_update_date():
+        """
+            Returns when the model was last updated
+        """
+        return datetime.now()
