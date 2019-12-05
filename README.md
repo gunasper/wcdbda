@@ -10,7 +10,7 @@ Este projeto tem como objetivo construir uma estrutura mínima que possibilite a
 É importante ressaltar que a estrutura proposta, bem como as técnicas usadas, tem como objetivo somente demonstrar a produtização de modelos. Ela é suficiente para a construção de um MVP, porém, ao colocar um modelo real em produção, outras considerações devem ser feitas, como, por exemplo:
 * disponibilização do modelo treinado em um serviço de armazenamento apropriado (e não por meio do GitHub, como no caso mostrado);
 * construção de regras de segurança, autenticação e/ou autorização para o webservice;
-* sistemas de log e rastrio de problemas;
+* sistemas de log e rastreio de problemas;
 * escalabilidade da solução;
 * testes automatizados;
 * etc.
