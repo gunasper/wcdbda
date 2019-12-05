@@ -23,7 +23,7 @@ Para a disponibilização do modelo, as seguintes tecnologias serão usadas:
 
 # Branches
 
-**master**: a branch master consiste no esqueleto mínimo do webservice a ser desenvolvido no workshop!
+**master**: a branch master consiste no esqueleto mínimo do webservice a ser desenvolvido.
 
 **solution**: exemplo de uso da solução proposta para um modelo de ML usando um dataset público de crédito.
 
