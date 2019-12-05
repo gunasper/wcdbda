@@ -21,6 +21,12 @@ Para a disponibilização do modelo, as seguintes tecnologias serão usadas:
 * Scikit-Learn: biblioteca de algoritmos de Machine Learning;
 * Heroku: plataforma em nuvem onde a aplicação ficará disponível.
 
+# Branches
+
+**master**: a branch master consiste no esqueleto mínimo do webservice a ser desenvolvido no workshop!
+
+**solution**: exemplo de uso da solução proposta para um modelo de ML usando um dataset público de crédito.
+
 # Arquivos principais
 
 #### Configuração do projeto
