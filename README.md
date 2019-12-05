@@ -86,7 +86,7 @@ Se tudo funcionou bem, devemos encontrar um array contendo a importância das fe
 
 * **mais informações:**
 
-Uma descrição detalhada sobre como esses passos devem ser executados pode ser encontrada em [Heroku](https://devcenter.heroku.com/articles/git)
+Uma descrição detalhada sobre como esses passos devem ser executados pode ser encontrada em [Heroku](https://devcenter.heroku.com/articles/git).
 
 
 # Referências
