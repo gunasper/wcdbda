@@ -80,6 +80,5 @@ Uma descrição detalhada sobre como esses passos devem ser executados pode ser 
 # Referências
 * https://datascienceacademy.com.br/blog/como-publicar-um-modelo-de-machine-learning-em-producao/
 * https://www.kdnuggets.com/2019/06/approaches-deploying-machine-learning-production.html
-
-
-
+* https://devcenter.heroku.com/articles/git
+* https://github.com/pallets/flask
