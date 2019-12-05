@@ -10,7 +10,7 @@ Este projeto tem como objetivo construir uma estrutura mínima que possibilite a
 É importante ressaltar que a estrutura proposta, bem como as técnicas usadas, tem como objetivo somente demonstrar a produtização de modelos. Ela é suficiente para a construção de um MVP, porém, ao colocar um modelo real em produção, outras considerações devem ser feitas, como, por exemplo:
 * disponibilização do modelo treinado em um serviço de armazenamento apropriado (e não por meio do GitHub, como no caso mostrado);
 * construção de regras de segurança, autenticação e/ou autorização para o webservice;
-* sistemas de log e rastrio de problemas;
+* sistemas de log e rastreio de problemas;
 * escalabilidade da solução;
 * testes automatizados;
 * etc.
@@ -46,12 +46,51 @@ Os arquivos acima contém comentários explicando o que fazer e aonde modificar,
 O comando "make run" irá inicializar a aplicação. Uma outra forma de inicializá-la é executar, em linha de comando, `env FLASK_APP=app.py env FLASK_DEBUG=1 flask run`.
 
 # Deploy Heroku
+Uma vez que tenhamos a API funcionando, precisamos:
 
+* **criar uma conta no Heroku:**
+
+A conta pode ser criada em https://heroku.com.
+
+* **criar um projeto no Heroku:**
+
+O projeto deve ser criado na interface do site do Heroku.
+
+* **instalar o Heroku CLI em nosso computador:**
+
+A instalação dependerá de seu sistema operacional. O seguinte link explica como fazer nos sistemas mais comuns: https://devcenter.heroku.com/articles/heroku-cli#download-and-install.
+
+* **configurar o Heroku Git em nosso repositório:**
+
+Configurar o Heroku Git significa fazer com que nosso repositório aponte para o projeto que foi criado na etapa anterior. Supondo que o projeto criado chame-se "clf_heroku", o seguinte comando faz com que nosso repositório passe a apontar para o projeto no Heroku:
+
+`heroku git:remote -a clf_heroku`
+
+* **subir o projeto para o Heroku:**
+
+`git push heroku master`: usar esse comando irá subir a versão que encontra-se na branch master (ou seja, somente o esqueleto de nossa API).
+
+`git push -f heroku solution:master`: usar esse comando irá subir a solução do hands on, ou seja, a API com modelo já treinado que encontra-se na branch solution.
+
+* **ativar Dynos no Heroku:**
+
+Dynos são análogos a containers que executam os processos no Heroku. Pode-se pensar neles, também, como um servidor virtualizado que irá servir nossa aplicação. O seguinte comando ativa 1 Dyno no projeto previamente configurado.
+
+`heroku ps:scale web=1`
+
+* **verificar se funcionou:**
+
+Após subirmos nossa aplicação no Heroku, podemos acessar informações sobre o modelo no endpoint de inspeção de modelos que criamos: https://clf_heroku.herokuapp.com/v0/model_info.
+
+Se tudo funcionou bem, devemos encontrar um array contendo a importância das features que foram usadas durante o treino, bem como informações de parâmetros do modelo (num_trees e num_features). Nesse endpoint, podemos adicionar quaisquer informações que julguemos importantes para inspecionar a solução.
+
+* **mais informações:**
+
+Uma descrição detalhada sobre como esses passos devem ser executados pode ser encontrada em [Heroku](https://devcenter.heroku.com/articles/git).
 
 
 # Referências
 * https://datascienceacademy.com.br/blog/como-publicar-um-modelo-de-machine-learning-em-producao/
 * https://www.kdnuggets.com/2019/06/approaches-deploying-machine-learning-production.html
-
-
-
+* https://devcenter.heroku.com/articles/git
+* https://github.com/pallets/flask
